@@ -1,5 +1,5 @@
 const { DataSource } =  require("typeorm")
-
+let connection
 
 const appDataSource = new DataSource({
     type: "postgres",
@@ -8,7 +8,8 @@ const appDataSource = new DataSource({
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [require("./schools/schools.entity")],
+    entities: [require("./schools/schools.entity"), 
+               require("./users/users.entity")],
     logging: true,
     synchronize: true,
     ssl: true,
@@ -19,7 +20,7 @@ const appDataSource = new DataSource({
   }
 })
 async function connect(){
-    let connection
+    
     try{
       if(!appDataSource.isInitialized){
         connection = await appDataSource.initialize()
